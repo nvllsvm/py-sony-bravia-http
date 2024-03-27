@@ -54,6 +54,7 @@ class LoungeTV:
 
 class BrightnessController(Controller):
     path = '/brightness'
+    tags = ['brightness']
 
     @get('/up')
     async def up(self, state: State) -> None:
@@ -66,6 +67,7 @@ class BrightnessController(Controller):
 
 class PowerController(Controller):
     path = '/power'
+    tags = ['power']
 
     @get('/on')
     async def on(self, state: State) -> None:
@@ -82,6 +84,7 @@ class PowerController(Controller):
 
 class VolumeController(Controller):
     path = '/volume'
+    tags = ['volume']
 
     @get('/up')
     async def up(self, state: State) -> None:
