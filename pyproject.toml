@@ -1,0 +1,16 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lounge_tv_http"
+dynamic = ["version"]
+dependencies = [
+    "litestar[standard]",
+]
+
+[project.scripts]
+lounge-tv-http = "lounge_tv_http.__main__:main"
+
+[tool.hatch.version]
+source = "vcs"
