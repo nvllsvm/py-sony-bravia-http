@@ -5,6 +5,8 @@ from litestar.datastructures import State
 
 
 class LoungeTV:
+    INPUT_TYPE_HDMI = 'hdmi'
+
     def __init__(self, command, serial_device):
         self.command = command
         self.serial_device = serial_device
@@ -47,6 +49,9 @@ class LoungeTV:
 
     async def brightness_down(self):
         await self._run('brightness-down')
+
+    async def input_select(self, input_type, input_num):
+        await self._run(f'input-{input_type}-{input_num}')
 
     async def status(self):
         return await self._run('status')
@@ -99,6 +104,36 @@ class VolumeController(Controller):
         await state.lounge_tv.mute()
 
 
+class InputSelectController(Controller):
+    path = '/input'
+    tags = ['input']
+
+    @get('/hdmi/1')
+    async def hdmi_1(self, state: State) -> None:
+        await state.lounge_tv.input_select(
+            state.lounge_tv.INPUT_TYPE_HDMI, 1)
+
+    @get('/hdmi/2')
+    async def hdmi_2(self, state: State) -> None:
+        await state.lounge_tv.input_select(
+            state.lounge_tv.INPUT_TYPE_HDMI, 2)
+
+    @get('/hdmi/3')
+    async def hdmi_3(self, state: State) -> None:
+        await state.lounge_tv.input_select(
+            state.lounge_tv.INPUT_TYPE_HDMI, 3)
+
+    @get('/hdmi/4')
+    async def hdmi_4(self, state: State) -> None:
+        await state.lounge_tv.input_select(
+            state.lounge_tv.INPUT_TYPE_HDMI, 4)
+
+    @get('/hdmi/5')
+    async def hdmi_5(self, state: State) -> None:
+        await state.lounge_tv.input_select(
+            state.lounge_tv.INPUT_TYPE_HDMI, 5)
+
+
 _DEFAULT_COMMAND = 'sony-bravia-cli'
 _DEFAULT_DEVICE = '/dev/ttyUSB0'
 
@@ -108,6 +143,7 @@ def create_app(lounge_tv_cmd=_DEFAULT_COMMAND,
     return Litestar(
         route_handlers=[
             BrightnessController,
+            InputSelectController,
             PowerController,
             VolumeController,
         ],
