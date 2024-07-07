@@ -50,6 +50,12 @@ class LoungeTV:
     async def brightness_down(self):
         await self._run('brightness-down')
 
+    async def brightness_min(self):
+        await self._run('brightness-min')
+
+    async def brightness_max(self):
+        await self._run('brightness-max')
+
     async def input_select(self, input_type, input_num):
         await self._run(f'input-{input_type}-{input_num}')
 
@@ -68,6 +74,14 @@ class BrightnessController(Controller):
     @get('/down')
     async def down(self, state: State) -> None:
         await state.lounge_tv.brightness_down()
+
+    @get('/min')
+    async def min(self, state: State) -> None:
+        await state.lounge_tv.brightness_min()
+
+    @get('/max')
+    async def max(self, state: State) -> None:
+        await state.lounge_tv.brightness_max()
 
 
 class PowerController(Controller):
