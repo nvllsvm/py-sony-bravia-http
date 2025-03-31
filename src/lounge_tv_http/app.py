@@ -1,7 +1,9 @@
 import asyncio
+from typing import Annotated
 
 from litestar import Controller, Litestar, get
 from litestar.datastructures import State
+from litestar.params import Parameter
 
 
 class LoungeTV:
@@ -122,30 +124,14 @@ class InputSelectController(Controller):
     path = '/input'
     tags = ['input']
 
-    @get('/hdmi/1')
-    async def hdmi_1(self, state: State) -> None:
+    @get('/hdmi/{port:int}')
+    async def hdmi_1(
+        self,
+        state: State,
+        port: Annotated[int, Parameter(ge=1, le=5)],
+    ) -> None:
         await state.lounge_tv.input_select(
-            state.lounge_tv.INPUT_TYPE_HDMI, 1)
-
-    @get('/hdmi/2')
-    async def hdmi_2(self, state: State) -> None:
-        await state.lounge_tv.input_select(
-            state.lounge_tv.INPUT_TYPE_HDMI, 2)
-
-    @get('/hdmi/3')
-    async def hdmi_3(self, state: State) -> None:
-        await state.lounge_tv.input_select(
-            state.lounge_tv.INPUT_TYPE_HDMI, 3)
-
-    @get('/hdmi/4')
-    async def hdmi_4(self, state: State) -> None:
-        await state.lounge_tv.input_select(
-            state.lounge_tv.INPUT_TYPE_HDMI, 4)
-
-    @get('/hdmi/5')
-    async def hdmi_5(self, state: State) -> None:
-        await state.lounge_tv.input_select(
-            state.lounge_tv.INPUT_TYPE_HDMI, 5)
+            state.lounge_tv.INPUT_TYPE_HDMI, port)
 
 
 _DEFAULT_COMMAND = 'sony-bravia-cli'
