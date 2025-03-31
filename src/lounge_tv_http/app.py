@@ -37,6 +37,18 @@ class LoungeTV:
     async def power(self):
         await self._run('power')
 
+    async def display(self):
+        await self._run('display')
+
+    async def picture_on(self):
+        await self._run('picture-on')
+
+    async def picture_off(self):
+        await self._run('picture-off')
+
+    async def picture(self):
+        await self._run('picture')
+
     async def volume_up(self):
         await self._run('volume-up')
 
@@ -84,6 +96,32 @@ class BrightnessController(Controller):
     @get('/max')
     async def max(self, state: State) -> None:
         await state.lounge_tv.brightness_max()
+
+
+class DisplayController(Controller):
+    path = '/display'
+    tags = ['display']
+
+    @get('/toggle')
+    async def toggle(self, state: State) -> None:
+        await state.lounge_tv.display()
+
+
+class PictureController(Controller):
+    path = '/picture'
+    tags = ['picture']
+
+    @get('/on')
+    async def on(self, state: State) -> None:
+        await state.lounge_tv.picture_on()
+
+    @get('/off')
+    async def off(self, state: State) -> None:
+        await state.lounge_tv.picture_off()
+
+    @get('/toggle')
+    async def toggle(self, state: State) -> None:
+        await state.lounge_tv.picture()
 
 
 class PowerController(Controller):
@@ -143,7 +181,9 @@ def create_app(lounge_tv_cmd=_DEFAULT_COMMAND,
     return Litestar(
         route_handlers=[
             BrightnessController,
+            DisplayController,
             InputSelectController,
+            PictureController,
             PowerController,
             VolumeController,
         ],
