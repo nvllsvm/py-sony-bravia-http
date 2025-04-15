@@ -4,6 +4,18 @@ from typing import Annotated
 from litestar import Controller, Litestar, get
 from litestar.datastructures import State
 from litestar.params import Parameter
+from litestar.logging import LoggingConfig
+
+
+logging_config = LoggingConfig(
+    root={"level": "INFO", "handlers": ["queue_listener"]},
+    formatters={
+        "standard": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}
+    },
+    log_exceptions="always",
+)
+
+logger = logging_config.configure()()
 
 
 class LoungeTV:
@@ -179,6 +191,7 @@ _DEFAULT_DEVICE = '/dev/ttyUSB0'
 def create_app(lounge_tv_cmd=_DEFAULT_COMMAND,
                serial_device=_DEFAULT_DEVICE):
     return Litestar(
+        logging_config=logging_config,
         route_handlers=[
             BrightnessController,
             DisplayController,
