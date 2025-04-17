@@ -28,7 +28,7 @@ class LoungeTV:
     async def _run(self, *args):
         proc = await asyncio.create_subprocess_exec(
             self.command,
-            self.serial_device,
+            '--dev', self.serial_device,
             *args,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE)
@@ -41,49 +41,49 @@ class LoungeTV:
         return stdout
 
     async def on(self):
-        await self._run('on')
+        await self._run('power', 'on')
 
     async def off(self):
-        await self._run('off')
+        await self._run('power', 'off')
 
     async def power(self):
-        await self._run('power')
+        await self._run('power', 'toggle')
 
     async def display(self):
-        await self._run('display')
+        await self._run('display', 'toggle')
 
     async def picture_on(self):
-        await self._run('picture-on')
+        await self._run('picture', 'on')
 
     async def picture_off(self):
-        await self._run('picture-off')
+        await self._run('picture', 'off')
 
     async def picture(self):
-        await self._run('picture')
+        await self._run('picture', 'toggle')
 
     async def volume_up(self):
-        await self._run('volume-up')
+        await self._run('volume', 'up')
 
     async def volume_down(self):
-        await self._run('volume-down')
+        await self._run('volume', 'down')
 
     async def mute(self):
-        await self._run('mute')
+        await self._run('mute', 'toggle')
 
     async def brightness_up(self):
-        await self._run('brightness-up')
+        await self._run('brightness', 'up')
 
     async def brightness_down(self):
-        await self._run('brightness-down')
+        await self._run('brightness', 'down')
 
     async def brightness_min(self):
-        await self._run('brightness-min')
+        await self._run('brightness', 'min')
 
     async def brightness_max(self):
-        await self._run('brightness-max')
+        await self._run('brightness', 'max')
 
     async def input_select(self, input_type, input_num):
-        await self._run(f'input-{input_type}-{input_num}')
+        await self._run(f'input-{input_type}', f'{input_num}')
 
     async def status(self):
         return await self._run('status')
